@@ -11,12 +11,11 @@ import seaborn as sns
 
 df = pd.read_csv('data/output.csv')
 df.to_json("data/training_data_1.jsonl", orient="records", lines=True)
-subset_data = df.head(1000)
-print(subset_data)
-df = df.head(1000)
+df = df.head(10000)
+print(df)
 df = df.drop_duplicates(subset=["prompt"])
 df["prompt"] = df["prompt"].apply(lambda x: str(x) + " ->")
-df["completion"] = df["completion"].apply(lambda x: str(x) + "\n")
+df["completion"] = df["completion"].apply(lambda x: str(x) + "")
 train_df, valid_df = train_test_split(df, test_size=0.1, random_state=42)
 train_df.to_json("data/training_data_prepared_train.jsonl", orient="records", lines=True)
 valid_df.to_json("data/training_data_prepared_valid.jsonl", orient="records", lines=True)
@@ -33,17 +32,18 @@ def upload_file(file_name: str) -> str:
 train_file_id = upload_file("data/training_data_prepared_train.jsonl")
 valid_file_id = upload_file("data/training_data_prepared_valid.jsonl")
 
-n_epochs = 10
-n_classes = 8
+n_epochs = 2
+n_classes = 2
 model = "ada"
-
+positive = "1"
 fine_tuning_job = openai.FineTune.create(
     training_file=train_file_id, 
     validation_file=valid_file_id, 
     compute_classification_metrics=True,
     classification_n_classes=n_classes,
     n_epochs=n_epochs,
-    model=model
+    model=model,
+    classification_positive_class=positive
 )
 
 def get_tokenizer(text: str) -> list[int]:
@@ -69,7 +69,7 @@ def retry_until_not_none(sleep_time: float=0) -> str:
       return wrapper
   return decorate
 
-@retry_until_not_none(sleep_time=1800)
+@retry_until_not_none(sleep_time=300)
 def retrieve_model_name(job_id: str) -> str:
     return openai.FineTune.retrieve(id=job_id).fine_tuned_model
 
@@ -102,4 +102,5 @@ def create_completion(
     completions = [answer["choices"][i]["text"].strip() for i in range(len(answer["choices"]))]
     return completions
 
-create_completion(["代开发票，联系电话：021-29876556"], fine_tuned_model, " ->", 1)
+results=create_completion(["代开发票，联系电话：021-29876556"], fine_tuned_model, " ->", 1)
+print(results)
