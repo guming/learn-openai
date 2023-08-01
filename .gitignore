@@ -2,3 +2,4 @@
 *.csv
 *.model
 *.npy
+*.jsonl
