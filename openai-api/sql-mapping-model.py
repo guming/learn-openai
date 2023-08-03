@@ -12,7 +12,7 @@ response = openai.ChatCompletion.create(
     },
     {
       "role": "user",
-      "content": "Write a SQL query which computes the average total order value for all orders on 2023-04-01."
+      "content": "Write JavaBean which mapping the tables"
     }
   ],
   temperature=0,
