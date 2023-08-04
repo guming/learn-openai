@@ -3,3 +3,8 @@
 *.model
 *.npy
 *.jsonl
+*.jpg
+*.jpeg
+*.txt
+*.pdopt
+*.pdparams
