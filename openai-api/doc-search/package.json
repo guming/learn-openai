@@ -9,6 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "embeddings": "tsx lib/generate-embeddings.ts",
+    "convert": "tsx lib/convertmd.ts",
     "embeddings:refresh": "tsx lib/generate-embeddings.ts --refresh"
   },
   "prettier": {
@@ -37,6 +38,7 @@
     "github-slugger": "^2.0.0",
     "gpt3-tokenizer": "^1.1.5",
     "lucide-react": "^0.128.0",
+    "markdown-it": "^13.0.1",
     "mdast": "^3.0.0",
     "mdast-util-from-markdown": "^1.2.0",
     "mdast-util-mdx": "^2.0.0",
@@ -58,6 +60,7 @@
   "devDependencies": {
     "@types/common-tags": "^1.8.1",
     "@types/estree": "^1.0.0",
+    "@types/markdown-it": "^13.0.0",
     "@types/mdast": "^3.0.11",
     "@types/yargs": "^17.0.24",
     "autoprefixer": "^10.4.14",

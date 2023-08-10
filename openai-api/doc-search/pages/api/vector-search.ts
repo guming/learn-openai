@@ -53,18 +53,18 @@ export default async function handler(req: NextRequest) {
     // Moderate the content to comply with OpenAI T&C
     const sanitizedQuery = query.trim()
     console.log(sanitizedQuery)
-    // const moderationResponse: CreateModerationResponse = await openai
-    //   .createModeration({ input: sanitizedQuery})
-    //   .then((res) => res.json())
+    const moderationResponse: CreateModerationResponse = await openai
+      .createModeration({ input: sanitizedQuery})
+      .then((res) => res.json())
     
-    // const [results] = moderationResponse.results
-    // console.log(moderationResponse)
-    // if (results.flagged) {
-    //   throw new UserError('Flagged content', {
-    //     flagged: true,
-    //     categories: results.categories,
-    //   })
-    // }
+    const [results] = moderationResponse.results
+    console.log(moderationResponse)
+    if (results.flagged) {
+      throw new UserError('Flagged content', {
+        flagged: true,
+        categories: results.categories,
+      })
+    }
 
     // Create embedding from query
     const embeddingResponse = await openai.createEmbedding({

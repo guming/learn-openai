@@ -134,7 +134,6 @@ function processMdxForSearch(content: string): ProcessedMdx {
   })
 
   const meta = extractMetaExport(mdxTree)
-  console.log(meta)
   // Remove all MDX elements from markdown
   const mdTree = filter(
     mdxTree,
