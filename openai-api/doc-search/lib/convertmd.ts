@@ -1,50 +1,64 @@
 import * as fs from 'fs';
 import MarkdownIt from 'markdown-it';
+import { Content, Root } from 'mdast';
+import { fromMarkdown } from 'mdast-util-from-markdown';
+import { mdxFromMarkdown } from 'mdast-util-mdx';
+import { toMarkdown } from 'mdast-util-to-markdown';
+import { mdxjs } from 'micromark-extension-mdxjs';
+import { u } from 'unist-builder';
+import { filter } from 'unist-util-filter';
 
 // 创建 markdown-it 实例
 const md = new MarkdownIt();
 
-// 要解析的 Markdown 文本
-const markdownText = `
-# Heading 1
+// 读取 Markdown 文件内容
+const markdownContent = fs.readFileSync('pages/docs/client-side-caching.md', 'utf-8');
+const mdxTree = fromMarkdown(markdownContent, {
+    extensions: [mdxjs()],
+    mdastExtensions: [mdxFromMarkdown()],
+})
 
-This is some *italic* text.
-
-- List item 1
-- List item 2
-
-[Link](https://www.example.com)
-
-# Heading 2
-
-This is some *italic* text.
-
-- List item 3
-- List item 4
-
-[Link](https://www.example.com)
-`;
-
-// 解析 Markdown 文本为标记数组（解析树）
-const tokens = md.parse(markdownText, {});
-
-// 递归遍历解析树
-function traverseTree(node) {
-  if (Array.isArray(node)) {
-    for (const childNode of node) {
-      traverseTree(childNode);
-    }
-  } else if (typeof node === 'object' && node.type) {
-    console.log('Type:', node.type, 'Content:', node.content);
-    if (node.children) {
-      traverseTree(node.children);
-    }
-  }
+function splitTreeBy(tree: Root, predicate: (node: Content) => boolean) {
+    return tree.children.reduce<Root[]>((trees, node) => {
+      const [lastTree] = trees.slice(-1)
+  
+      if (!lastTree || predicate(node)) {
+        const tree: Root = u('root', [node])
+        return trees.concat(tree)
+      }
+  
+      lastTree.children.push(node)
+      return trees
+    }, [])
 }
 
-// 遍历解析树
-traverseTree(tokens);
+const mdTree = filter(
+    mdxTree,
+    (node) =>
+      ![
+        'mdxjsEsm',
+        'mdxJsxFlowElement',
+        'mdxJsxTextElement',
+        'mdxFlowExpression',
+        'mdxTextExpression',
+      ].includes(node.type)
+  )
 
+if (!mdTree) {
+    console.log(`md tree not found`)
+}
+const sectionTrees = splitTreeBy(mdTree, (node) => node.type === 'heading')
 
+const sections = sectionTrees.map((tree) => {
+    const [firstNode] = tree.children
+    console.log(firstNode)
+    const heading = firstNode.type === 'heading' ? firstNode.children[0].value : undefined
 
+    return {
+      content: toMarkdown(tree),
+      heading,
+      
+    }
+  })
 
+console.log(sections)
