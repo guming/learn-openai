@@ -1,4 +1,4 @@
-# Next.js OpenAI Doc Search Starter
+# OpenAI Doc Search Starter
 
 This starter takes all the `.mdx` files in the `pages` directory and processes them to use as custom context within [OpenAI Text Completion](https://platform.openai.com/docs/guides/completion) prompts.
 
