@@ -13,3 +13,4 @@
       * what's embedding
       * how to install redis on Linux
       * what's the redis implementation of client-side caching
+* Train a spam message recognition model using OpenAI fine-tuning -- demo
