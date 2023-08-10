@@ -2,7 +2,7 @@
 
 * Implementing Spam SMS Recognition Using sklearn -- demo
 * Handwritten Digit Image Recognition Using LeNet-5 -- demo
-* Food Recognition and Classification Using VGG Neural Network -- demo
+* Food Recognition and Classification Using VGG Network -- demo
 * Implementing Prompts Using the OpenAI API
   * NLP to sql
   * sql to Javabean
