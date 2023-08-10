@@ -8,7 +8,7 @@
   * sql to Javabean
   * property-based-testing
 * Implementing Embedding Using the OpenAI API
-  * Intelligent Document Retrieval Using vectorstore
+  * Intelligent Document Retrieval Using pgvector
     * sample：
       * what's embedding
       * how to install redis on Linux
