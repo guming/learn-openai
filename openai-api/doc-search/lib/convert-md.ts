@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import MarkdownIt from 'markdown-it';
 import { Content, Root } from 'mdast';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
@@ -8,10 +7,6 @@ import { mdxjs } from 'micromark-extension-mdxjs';
 import { u } from 'unist-builder';
 import { filter } from 'unist-util-filter';
 
-// 创建 markdown-it 实例
-const md = new MarkdownIt();
-
-// 读取 Markdown 文件内容
 const markdownContent = fs.readFileSync('pages/docs/client-side-caching.md', 'utf-8');
 const mdxTree = fromMarkdown(markdownContent, {
     extensions: [mdxjs()],

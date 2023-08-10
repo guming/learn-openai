@@ -9,7 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "embeddings": "tsx lib/generate-embeddings.ts",
-    "convert": "tsx lib/convertmd.ts",
+    "convert": "tsx lib/convert-md.ts",
     "embeddings:refresh": "tsx lib/generate-embeddings.ts --refresh"
   },
   "prettier": {
